@@ -102,16 +102,16 @@ def makeVideoQuestion():
     # Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60
     clip1 = VideoFileClip("3579196.mp4").subclip(0,wave1+0.5)
     clip2 = VideoFileClip("3579196.mp4").subclip(0,wave2+0.5)
-    clip3 = VideoFileClip("3579196.mp4").subclip(0,wave3+0.25)
-    clip4 = VideoFileClip("3579196.mp4").subclip(0,wave4+0.25)
+    clip3 = VideoFileClip("3579196.mp4").subclip(0,wave3+0.5)
+    clip4 = VideoFileClip("3579196.mp4").subclip(0,wave4+0.5)
 
     
 
     # Reduce the audio volume (volume x 0.8)
     clip1 = clip1.volumex(0.8)
     clip2 = clip2.volumex(0.8)
-    clip3 = clip2.volumex(0.8)
-    clip4 = clip2.volumex(0.8)
+    clip3 = clip3.volumex(0.8)
+    clip4 = clip4.volumex(0.8)
 
     imageClip1= ImageClip(TITLE_IMAGE)
     imageClip1 =imageClip1.set_position('center').set_duration(wave1)
@@ -120,10 +120,10 @@ def makeVideoQuestion():
     imageClip2 =imageClip2.set_position('center').set_duration(wave2+0.5)
     
     imageClip3= ImageClip(OUTRO1_IMAGE)
-    imageClip3 =imageClip3.set_position('center').set_duration(wave3+0.25)
+    imageClip3 =imageClip3.set_position('center').set_duration(wave3+0.5)
     
     imageClip4= ImageClip(OUTRO2_IMAGE)
-    imageClip4 =imageClip4.set_position('center').set_duration(wave4+0.25)
+    imageClip4 =imageClip4.set_position('center').set_duration(wave4+0.5)
     
     #Importing voices to the project.
     voiceClip1 = AudioFileClip("voices/intro.mp3")
@@ -132,7 +132,7 @@ def makeVideoQuestion():
     voiceClip4 = AudioFileClip("voices/outro2.mp3")
     
     #Composing the audio together.
-    new_audioclip = CompositeAudioClip([voiceClip1,voiceClip2.set_start(wave1+0.5),voiceClip3.set_start(wave2+0.25),voiceClip4.set_start(wave3+0.25)])
+    new_audioclip = CompositeAudioClip([voiceClip1,voiceClip2.set_start(wave1+0.5),voiceClip3.set_start(wave1+wave2+0.5),voiceClip4.set_start(wave1+wave2+wave3+0.5)])
     
     
     # Overlay the text clip on the first video clip
@@ -141,7 +141,7 @@ def makeVideoQuestion():
     video3 = CompositeVideoClip([clip3,imageClip3])
     video4 = CompositeVideoClip([clip4,imageClip4])
     
-    finalVideo = CompositeVideoClip([video1,video2.set_start(wave1+0.5),video3.set_start(wave2+0.25),video4.set_start(wave3+0.25)])
+    finalVideo = CompositeVideoClip([video1,video2.set_start(wave1+0.5),video3.set_start(wave1+wave2+0.5),video4.set_start(wave1+wave2+wave3+0.5)])
     
     #Adding the voice together.
     finalVideo.audio = new_audioclip
