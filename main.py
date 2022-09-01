@@ -24,15 +24,7 @@ newLinerConstant=6
 OUTRO1= "Write your answer in the comment below!"
 OUTRO2= "Don't forget to subscribe so you don't miss the answer in the following video!"
 
-def newLineMaker(beforeText):
-    afterText=""
-    beforeText = beforeText.split(" ")
-    for i in range(newLinerConstant,len(beforeText), newLinerConstant):
-        beforeText.insert(i,"\n")
-    for word in beforeText:
-        afterText = afterText+ word +" "
-    print(afterText)
-    return afterText
+
 
 def textToImageMaker(msg,fileName):
     
