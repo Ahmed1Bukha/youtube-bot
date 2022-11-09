@@ -28,6 +28,30 @@ OUTRO2= "Don't forget to subscribe so you don't miss the answer in the following
 
 
 
+
+
+
+
+
+def convertPartsToVoice(title,riddle,answer):
+    
+
+    textToImageMaker(introDefult+title,"title")
+    textToImageMaker(riddle,"riddle")
+    textToImageMaker(OUTRO1,"outro1")
+    textToImageMaker(OUTRO2,"outro2")
+    
+    tts(req_text= introDefult+title, filename="voices/intro.mp3")
+    
+
+
+    tts(req_text= riddle, filename="voices/que.mp3")
+    
+    tts(req_text= "The answer is : "+answer, filename="voices/ans.mp3")
+   
+    tts(req_text= OUTRO1, filename="voices/outro1.mp3")
+    tts(req_text= OUTRO1, filename="voices/outro2.mp3")
+  
 def textToImageMaker(msg,fileName):
     
     
@@ -46,33 +70,7 @@ def textToImageMaker(msg,fileName):
         current_h += h + pad
     im.save(fileName+".png")
 
-
-
-
-
-def convertPartsToVoice(title,riddle,answer):
-    
-    textToImageMaker(introDefult+title,"title")
-    textToImageMaker(riddle,"riddle")
-    textToImageMaker(OUTRO1,"outro1")
-    textToImageMaker(OUTRO2,"outro2")
-    
-  
-    introduction = gtts.tts.gTTS(text=introDefult+title ,lang = language)
-    introduction.save('voices/intro.mp3')
-   
-    question = gtts.tts.gTTS(text=riddle,lang = language)
-    question.save('voices/que.mp3')
-    
-    final = gtts.tts.gTTS(text="The answer is : "+answer,lang = language)
-    final.save('voices/ans.mp3')
-    
-    outroVoice1 = gtts.tts.gTTS(text=OUTRO1,lang = language)
-    outroVoice1.save('voices/outro1.mp3')
-    
-    outroVoice2 = gtts.tts.gTTS(text=OUTRO2,lang = language)
-    outroVoice2.save('voices/outro2.mp3')
-
+ 
 
 def lengthOfSounds():
     wave1 = MP3("voices/intro.mp3")
@@ -142,65 +140,9 @@ def makeVideoQuestion():
     # Write the result to a file (many options available !)
     finalVideo.write_videofile("finalVideo.mp4")
     
-voices = [
-    # DISNEY VOICES
-    'en_us_ghostface',            # Ghost Face
-    'en_us_chewbacca',            # Chewbacca
-    'en_us_c3po',                 # C3PO
-    'en_us_stitch',               # Stitch
-    'en_us_stormtrooper',         # Stormtrooper
-    'en_us_rocket',               # Rocket
-
-    # ENGLISH VOICES
-    'en_au_001',                  # English AU - Female
-    'en_au_002',                  # English AU - Male
-    'en_uk_001',                  # English UK - Male 1
-    'en_uk_003',                  # English UK - Male 2
-    'en_us_001',                  # English US - Female (Int. 1)
-    'en_us_002',                  # English US - Female (Int. 2)
-    'en_us_006',                  # English US - Male 1
-    'en_us_007',                  # English US - Male 2
-    'en_us_009',                  # English US - Male 3
-    'en_us_010',                  # English US - Male 4
-
-    # EUROPE VOICES
-    'fr_001',                     # French - Male 1
-    'fr_002',                     # French - Male 2
-    'de_001',                     # German - Female
-    'de_002',                     # German - Male
-    'es_002',                     # Spanish - Male
-
-    # AMERICA VOICES
-    'es_mx_002',                  # Spanish MX - Male
-    'br_001',                     # Portuguese BR - Female 1
-    'br_003',                     # Portuguese BR - Female 2
-    'br_004',                     # Portuguese BR - Female 3
-    'br_005',                     # Portuguese BR - Male
-
-    # ASIA VOICES
-    'id_001',                     # Indonesian - Female
-    'jp_001',                     # Japanese - Female 1
-    'jp_003',                     # Japanese - Female 2
-    'jp_005',                     # Japanese - Female 3
-    'jp_006',                     # Japanese - Male
-    'kr_002',                     # Korean - Male 1
-    'kr_003',                     # Korean - Female
-    'kr_004',                     # Korean - Male 2
-
-    # SINGING VOICES
-    'en_female_f08_salut_damour'  # Alto
-    'en_male_m03_lobby'           # Tenor
-    'en_female_f08_warmy_breeze'  # Warmy Breeze
-    'en_male_m03_sunshine_soon'   # Sunshine Soon
-
-    # OTHER
-    'en_male_narration'           # narrator
-    'en_male_funny'               # wacky
-    'en_female_emotional'         # peaceful
-]
 
 
-def tts(session_id: SESSION_ID, text_speaker: str = "en_us_002", req_text: str = "TikTok Text To Speech", filename: str = 'voice.mp3', play: bool = False):
+def tts(session_id: str = SESSION_ID, text_speaker: str = "en_us_002", req_text: str = "TikTok Text To Speech", filename: str = 'voices/voice.mp3', play: bool = False):
 
     req_text = req_text.replace("+", "plus")
     req_text = req_text.replace(" ", "+")
