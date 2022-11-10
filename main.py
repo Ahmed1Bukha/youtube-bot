@@ -50,7 +50,7 @@ def convertPartsToVoice(title,riddle,answer):
     tts(req_text= "The answer is : "+answer, filename="voices/ans.mp3")
    
     tts(req_text= OUTRO1, filename="voices/outro1.mp3")
-    tts(req_text= OUTRO1, filename="voices/outro2.mp3")
+    tts(req_text= OUTRO2, filename="voices/outro2.mp3")
   
 def textToImageMaker(msg,fileName):
     
