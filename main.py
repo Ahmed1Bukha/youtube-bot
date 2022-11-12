@@ -18,13 +18,13 @@ RIDDLE_IMAGE = "riddle.png"
 OUTRO1_IMAGE = "outro1.png"
 OUTRO2_IMAGE = "outro2.png"
 SESSION_ID = "89c12c43bf1c3f2c6efe9abc0dcf3d03"
-
+VIDEO_PATH = "video/final.mp4"
 
 language = 'en-uk'
-introDefult = "Can you beat this riddle? try it yourself! the title is : \n"
+introDefult = "Try to solve this riddle!  \n"
 newLinerConstant=6
-OUTRO1= "Write your answer in the comment below!"
-OUTRO2= "Don't forget to subscribe so you don't miss the answer in the following video!"
+OUTRO1= "Write your answer in the comment below and I will mention the winners in the following video!"
+OUTRO2= "Prove that you're smarter than most people"
 
 
 
@@ -36,8 +36,8 @@ OUTRO2= "Don't forget to subscribe so you don't miss the answer in the following
 def convertPartsToVoice(title,riddle,answer):
     
 
-    textToImageMaker(introDefult+title,"title")
-    textToImageMaker(riddle,"riddle")
+    textToImageMaker(introDefult+title,"title",100)
+    textToImageMaker(riddle,"riddle",70)
     textToImageMaker(OUTRO1,"outro1")
     textToImageMaker(OUTRO2,"outro2")
     
@@ -52,16 +52,16 @@ def convertPartsToVoice(title,riddle,answer):
     tts(req_text= OUTRO1, filename="voices/outro1.mp3")
     tts(req_text= OUTRO2, filename="voices/outro2.mp3")
   
-def textToImageMaker(msg,fileName):
+def textToImageMaker(msg,fileName,size=70):
     
     
     astr = msg
-    para = textwrap.wrap(astr, width=32)
+    para = textwrap.wrap(astr, width=28)
 
     MAX_W, MAX_H = 1080, 1920
     im = Image.new('RGBA', (MAX_W, MAX_H))
     draw = ImageDraw.Draw(im)
-    font = ImageFont.truetype('arial.ttf', 60)
+    font = ImageFont.truetype('arial.ttf', size)
 
     current_h, pad = 850, 5
     for line in para:
@@ -89,13 +89,15 @@ def lengthOfSounds():
 
 def makeVideoQuestion():
     wave1,wave2,wave3,wave4 = lengthOfSounds()
+
+    totalLenght = wave1+wave2+wave3+wave4
     
     
     # Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60
-    clip1 = VideoFileClip("3579196.mp4").subclip(0,wave1+0.5)
-    clip2 = VideoFileClip("3579196.mp4").subclip(0,wave2+0.5)
-    clip3 = VideoFileClip("3579196.mp4").subclip(0,wave3+0.5)
-    clip4 = VideoFileClip("3579196.mp4").subclip(0,wave4+0.5)
+    clip1 = VideoFileClip(VIDEO_PATH).subclip(0,wave1+0.5)
+    clip2 = VideoFileClip(VIDEO_PATH).subclip(wave1+0.5,wave2+1.5)
+    clip3 = VideoFileClip(VIDEO_PATH).subclip(wave1+wave2+2.5,wave3+0.5)
+    clip4 = VideoFileClip(VIDEO_PATH).subclip(wave1+wave2+wave3+3,wave4+0.5)
 
     
 
@@ -106,10 +108,10 @@ def makeVideoQuestion():
     clip4 = clip4.volumex(0.8)
 
     imageClip1= ImageClip(TITLE_IMAGE)
-    imageClip1 =imageClip1.set_position('center').set_duration(wave1)
+    imageClip1 =imageClip1.set_position('center').set_duration(wave1+0.5)
     
     imageClip2= ImageClip(RIDDLE_IMAGE)
-    imageClip2 =imageClip2.set_position('center').set_duration(wave2+0.5)
+    imageClip2 =imageClip2.set_position('center').set_duration(wave2+1.5)
     
     imageClip3= ImageClip(OUTRO1_IMAGE)
     imageClip3 =imageClip3.set_position('center').set_duration(wave3+0.5)
@@ -118,13 +120,16 @@ def makeVideoQuestion():
     imageClip4 =imageClip4.set_position('center').set_duration(wave4+0.5)
     
     #Importing voices to the project.
+    backgroundMusic =  AudioFileClip("voices/background.mp3")
+   
+    
     voiceClip1 = AudioFileClip("voices/intro.mp3")
     voiceClip2 = AudioFileClip("voices/que.mp3")
     voiceClip3 = AudioFileClip("voices/outro1.mp3")
     voiceClip4 = AudioFileClip("voices/outro2.mp3")
     
     #Composing the audio together.
-    new_audioclip = CompositeAudioClip([voiceClip1,voiceClip2.set_start(wave1+0.5),voiceClip3.set_start(wave1+wave2+0.5),voiceClip4.set_start(wave1+wave2+wave3+0.75)])
+    new_audioclip = CompositeAudioClip([backgroundMusic.set_end(2.5+totalLenght),voiceClip1,voiceClip2.set_start(wave1+0.5),voiceClip3.set_start(wave1+wave2+2),voiceClip4.set_start(wave1+wave2+wave3+2.5)])
     
     
     # Overlay the text clip on the first video clip
@@ -133,12 +138,12 @@ def makeVideoQuestion():
     video3 = CompositeVideoClip([clip3,imageClip3])
     video4 = CompositeVideoClip([clip4,imageClip4])
     
-    finalVideo = CompositeVideoClip([video1,video2.set_start(wave1+0.5),video3.set_start(wave1+wave2+0.5),video4.set_start(wave1+wave2+wave3+0.75)])
+    finalVideo = CompositeVideoClip([video1,video2.set_start(wave1+0.5),video3.set_start(wave1+wave2+2),video4.set_start(wave1+wave2+wave3+2.5)])
     
     #Adding the voice together.
-    finalVideo.audio = new_audioclip
+    finalVideo.audio = new_audioclip 
     # Write the result to a file (many options available !)
-    finalVideo.write_videofile("finalVideo.mp4")
+    finalVideo.write_videofile("finalVideoLmfaoi.mp4")
     
 
 
